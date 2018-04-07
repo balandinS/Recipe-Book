@@ -1,8 +1,8 @@
 <nav class="navbar navbar-expand navbar-dark bg-dark">
     <div class="container-fluid">
-       
+        <div class = "navbar-header">
            <a href="#" class="navbar-brand" >Recipe Book</a>
-       
+        </div>
 
         <div class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
@@ -10,8 +10,8 @@
                 <li class="nav-item"><a class="nav-link" href="#" (click) = "onSelect('shopping-list')">Shopping list</a></li>
             </ul>
             
-            <ul class="nav navbar-nav navbar-right">
-                    <li class="nav-item dropdown">
+            <ul class="nav navbar-nav navbar-right" appDropDown>
+                    <li class="dropdown"  appDropDown>
                       <a href="#" class="dropdown-toggle nav-link" role="button" id="dropdown09" >Manage</a>
                         <ul class="dropdown-menu" aria-labelledby="dropdown09"  >
                         <li><a href="#">Save Data</a></li>
