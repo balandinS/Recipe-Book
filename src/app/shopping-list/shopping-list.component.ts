@@ -6,7 +6,7 @@ import { ShoppingService } from '../Shared/shoppingList.service';
   selector: 'app-shopping-list',
   templateUrl: './shopping-list.component.html',
   styleUrls: ['./shopping-list.component.css'],
-  providers: [ ShoppingService ]
+  providers: [ ]
 })
 export class ShoppingListComponent implements OnInit {
    ingredients: Ingredien[];
@@ -16,8 +16,8 @@ export class ShoppingListComponent implements OnInit {
       this.ingredients = this.shoppingService.getIngredients();
       this.shoppingService.newIngredient
       .subscribe(
-          (ingredient: Ingredien) => {
-             this.ingredients.push(ingredient);
+          (ingredients: Ingredien[]) => {
+          this.ingredients = ingredients;
           }
       );
 
