@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../../Shared/recipeService';
 import { Router, ActivatedRoute } from '@angular/router';
-import { relative } from 'path';
+// import { relative } from 'path';
 @Component({
   selector: 'app-recipe-list',
   templateUrl: './recipe-list.component.html',
