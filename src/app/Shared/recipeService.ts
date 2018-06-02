@@ -2,9 +2,13 @@ import { OnInit, Injectable } from '@angular/core';
 import { Recipe } from '../recipes/recipe.model';
 import { Ingredien } from './ingredient.model';
 import { ShoppingService } from './shoppingList.service';
+import { Subject } from 'rxjs/Subject';
 
 @Injectable()
 export class RecipeService implements OnInit {
+
+  recipeChanges = new Subject<Recipe[]>();
+
   private recipes: Recipe[] = [
   new Recipe(
   0,
@@ -33,6 +37,16 @@ export class RecipeService implements OnInit {
   ngOnInit() {
   }
 
+  addRecipe(newRecipe: Recipe) {
+    this.recipes.push(newRecipe);
+    this.recipeChanges.next(this.recipes.slice());
+  }
+
+  updateRecipe(index: number, newRecipe: Recipe) {
+    this.recipes[index] = newRecipe;
+    this.recipeChanges.next(this.recipes.slice());
+  }
+
   getRecipes() {
    return this.recipes.slice();
   }
@@ -48,6 +62,10 @@ export class RecipeService implements OnInit {
 
   addIngridientToShoppList(ingredients: Ingredien[]) {
     this.shoppingService.addNewIngrediens(ingredients);
+   }
+
+   deleteIngridient(index: number) {
+     this.shoppingService.deleteIngredian(index);
    }
 
 }
