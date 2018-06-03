@@ -11,7 +11,6 @@ export class RecipeService implements OnInit {
 
   private recipes: Recipe[] = [
   new Recipe(
-  0,
   'Hamburger',
   'Meat',
   'https://fthmb.tqn.com/HEbGAFMq0PxbLMd3_Ooedlv_sCY=/3000x2000/filters:' +
@@ -22,7 +21,6 @@ export class RecipeService implements OnInit {
   ] ),
 
   new Recipe(
-  1,
   'Sushi',
   'Japanise',
   'https://media-cdn.tripadvisor.com/media/photo-s/05/b4/63/34/shushi.jpg',
@@ -51,12 +49,8 @@ export class RecipeService implements OnInit {
    return this.recipes.slice();
   }
 
-  getRecipe(id: number) {
-    const recipe =  this.recipes.find(
-      (r) => {
-        return r.id === id;
-      }
-    );
+  getRecipe(index: number) {
+    const recipe =  this.recipes[index];
      return recipe;
   }
 
@@ -64,8 +58,9 @@ export class RecipeService implements OnInit {
     this.shoppingService.addNewIngrediens(ingredients);
    }
 
-   deleteIngridient(index: number) {
-     this.shoppingService.deleteIngredian(index);
+   deleteRecipe(index: number) {
+     this.recipes.slice(index, 1);
+     this.recipeChanges.next(this.recipes.slice());
    }
 
 }

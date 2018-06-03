@@ -1,7 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute, Params, RouteConfigLoadStart, Router } from '@angular/router';
 import { RecipeService } from '../../Shared/recipeService';
 import { FormGroup, FormControl, FormArray, Validators } from '@angular/forms';
+import { Recipe } from '../recipe.model';
 
 @Component({
   selector: 'app-recipes-edit',
@@ -38,11 +39,18 @@ export class RecipesEditComponent implements OnInit {
   }
 
   onSubmit() {
+    const newRecipe = new Recipe (
+      this.recipeForm.value['name'],
+      this.recipeForm.value['description'],
+      this.recipeForm.value['imagePath'],
+      this.recipeForm.value['ingredeints']
+    );
    if (this.editMode) {
-     this.srvRecipe.updateRecipe(this.id, this.recipeForm.value);
+     this.srvRecipe.updateRecipe(this.id, newRecipe);
    } else {
-     this.srvRecipe.addRecipe(this.recipeForm.value);
+     this.srvRecipe.addRecipe(newRecipe);
    }
+     this.onCencel();
   }
 
   private initForm() {
@@ -80,7 +88,4 @@ export class RecipesEditComponent implements OnInit {
     this.router.navigate(['../'], {relativeTo: this.route});
   }
 
-  onDelete() {
-    this.srvRecipe.deleteIngridient(this.id);
-  }
 }
