@@ -59,7 +59,7 @@ export class RecipeService implements OnInit {
    }
 
    deleteRecipe(index: number) {
-     this.recipes.slice(index, 1);
+     this.recipes.splice(index, 1);
      this.recipeChanges.next(this.recipes.slice());
    }
 
