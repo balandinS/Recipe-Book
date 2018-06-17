@@ -3,6 +3,7 @@ import { Recipe } from '../recipes/recipe.model';
 import { Ingredien } from './ingredient.model';
 import { ShoppingService } from './shoppingList.service';
 import { Subject } from 'rxjs/Subject';
+import { Http } from '@angular/http';
 
 @Injectable()
 export class RecipeService implements OnInit {
@@ -30,11 +31,14 @@ export class RecipeService implements OnInit {
   ])
   ];
 
-  constructor(private shoppingService: ShoppingService) {}
+  constructor(private shoppingService: ShoppingService, private http: Http) {}
 
   ngOnInit() {
   }
 
+  saveData() {
+   return this.http.put('https://ng-recipe-book-1d243.firebaseio.com/data.json', this.recipes);
+  }
   addRecipe(newRecipe: Recipe) {
     this.recipes.push(newRecipe);
     this.recipeChanges.next(this.recipes.slice());
@@ -62,5 +66,7 @@ export class RecipeService implements OnInit {
      this.recipes.splice(index, 1);
      this.recipeChanges.next(this.recipes.slice());
    }
+
+
 
 }
