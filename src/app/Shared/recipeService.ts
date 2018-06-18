@@ -3,7 +3,9 @@ import { Recipe } from '../recipes/recipe.model';
 import { Ingredien } from './ingredient.model';
 import { ShoppingService } from './shoppingList.service';
 import { Subject } from 'rxjs/Subject';
-import { Http } from '@angular/http';
+// tslint:disable-next-line:import-blacklist
+import 'rxjs/Rx';
+import { Http, Response } from '@angular/http';
 
 @Injectable()
 export class RecipeService implements OnInit {
@@ -11,34 +13,58 @@ export class RecipeService implements OnInit {
   recipeChanges = new Subject<Recipe[]>();
 
   private recipes: Recipe[] = [
-  new Recipe(
-  'Hamburger',
-  'Meat',
-  'https://fthmb.tqn.com/HEbGAFMq0PxbLMd3_Ooedlv_sCY=/3000x2000/filters:' +
-  'fill(auto,1)/Hamburger-Hot-Dog-58add5f03df78c345bdef6ff.jpg',
-  [
-  new Ingredien('meat', 1),
-  new Ingredien('buns', 2)
-  ] ),
+    new Recipe(
+      'Hamburger',
+      'Meat',
+      'https://fthmb.tqn.com/HEbGAFMq0PxbLMd3_Ooedlv_sCY=/3000x2000/filters:' +
+      'fill(auto,1)/Hamburger-Hot-Dog-58add5f03df78c345bdef6ff.jpg',
+      [
+        new Ingredien('meat', 1),
+        new Ingredien('buns', 2)
+      ]),
 
-  new Recipe(
-  'Sushi',
-  'Japanise',
-  'https://media-cdn.tripadvisor.com/media/photo-s/05/b4/63/34/shushi.jpg',
-  [
-  new Ingredien('fish', 2),
-  new Ingredien('rise', 40)
-  ])
+    new Recipe(
+      'Sushi',
+      'Japanise',
+      'https://media-cdn.tripadvisor.com/media/photo-s/05/b4/63/34/shushi.jpg',
+      [
+        new Ingredien('fish', 2),
+        new Ingredien('rise', 40)
+      ])
   ];
 
-  constructor(private shoppingService: ShoppingService, private http: Http) {}
+  constructor(private shoppingService: ShoppingService, private http: Http) { }
 
   ngOnInit() {
   }
 
   saveData() {
-   return this.http.put('https://ng-recipe-book-1d243.firebaseio.com/data.json', this.recipes);
+    return this.http.put('https://ng-recipe-book-1d243.firebaseio.com/data.json', this.recipes);
   }
+
+  getData() {
+    return this.http.get('https://ng-recipe-book-1d243.firebaseio.com/data.json')
+      .map(
+        (respone: Response) => {
+          const data: Recipe[] = respone.json();
+          // tslint:disable-next-line:prefer-const
+          for (let recipe of data) {
+            if (!recipe['ingredien']) {
+              recipe['ingredien'] = [];
+            }
+          }
+          return data;
+        })
+      .subscribe(
+        (recipes: Recipe[]) => this.setRecipes(recipes)
+      );
+  }
+
+  setRecipes(recipes: Recipe[]) {
+    this.recipes = recipes;
+    this.recipeChanges.next(this.recipes.slice());
+  }
+
   addRecipe(newRecipe: Recipe) {
     this.recipes.push(newRecipe);
     this.recipeChanges.next(this.recipes.slice());
@@ -50,22 +76,22 @@ export class RecipeService implements OnInit {
   }
 
   getRecipes() {
-   return this.recipes.slice();
+    return this.recipes.slice();
   }
 
   getRecipe(index: number) {
-    const recipe =  this.recipes[index];
-     return recipe;
+    const recipe = this.recipes[index];
+    return recipe;
   }
 
   addIngridientToShoppList(ingredients: Ingredien[]) {
     this.shoppingService.addNewIngrediens(ingredients);
-   }
+  }
 
-   deleteRecipe(index: number) {
-     this.recipes.splice(index, 1);
-     this.recipeChanges.next(this.recipes.slice());
-   }
+  deleteRecipe(index: number) {
+    this.recipes.splice(index, 1);
+    this.recipeChanges.next(this.recipes.slice());
+  }
 
 
 

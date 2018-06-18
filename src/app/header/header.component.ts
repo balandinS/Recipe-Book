@@ -17,4 +17,8 @@ export class HeaderComponent {
        (error) => console.log(error)
     );
   }
+
+  onGetData() {
+    this.srvRecipe.getData();
+  }
  }
