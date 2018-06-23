@@ -1,47 +1,36 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
-
 import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
-import { RecipesComponent } from './recipes/recipes.component';
-import { RecipeListComponent } from './recipes/recipe-list/recipe-list.component';
-import { RecipeDeteilComponent } from './recipes/recipe-deteil/recipe-deteil.component';
-import { RecipeItemComponent } from './recipes/recipe-list/recipe-item/recipe-item.component';
 import { ShoppingListComponent } from './shopping-list/shopping-list.component';
 import { ShoppingEditComponent } from './shopping-list/shopping-edit/shopping-edit/shopping-edit.component';
 import { DropDownDirective } from './Shared/dropDown.directive';
 import { ShoppingService } from './Shared/shoppingList.service';
 import { AppRoutingModule } from './app-routing.module';
-import { RecipesStartComponent } from './recipes/recipes-start/recipes-start.component';
-import { RecipesEditComponent } from './recipes/recipes-edit/recipes-edit.component';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { RecipeService } from './Shared/recipeService';
+import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { SignupComponent } from './auth/signup/signup.component';
 import { SigninComponent } from './auth/signin/signin.component';
 import { AuthService } from './auth/auth.service';
+import { RecipeService } from './Shared/recipeService';
+import { RecipesModule } from './recipes/recipes.module';
+import { RecipesRouter } from './recipes/recipesRoutes.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     HeaderComponent,
-    RecipesComponent,
-    RecipeListComponent,
-    RecipeDeteilComponent,
-    RecipeItemComponent,
     ShoppingListComponent,
     ShoppingEditComponent,
     DropDownDirective,
-    RecipesStartComponent,
-    RecipesEditComponent,
     SignupComponent,
     SigninComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule,
+    RecipesRouter,
+    RecipesModule,
     FormsModule,
     HttpModule
   ],
