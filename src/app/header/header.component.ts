@@ -2,6 +2,8 @@
 import { Component} from '@angular/core';
 import { RecipeService } from '../Shared/recipeService';
 import { Http } from '@angular/http';
+import { AuthService } from '../auth/auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +11,7 @@ import { Http } from '@angular/http';
 })
 // tslint:disable-next-line:component-class-suffix
 export class HeaderComponent {
-  constructor(private srvRecipe: RecipeService) {}
+  constructor(private srvRecipe: RecipeService, private srvAuth: AuthService, private router: Router) {}
 
   onSaveData() {
     this.srvRecipe.saveData().subscribe(
@@ -21,4 +23,12 @@ export class HeaderComponent {
   onGetData() {
     this.srvRecipe.getData();
   }
+  onLogOut() {
+    this.srvAuth.logOUt();
+    this.router.navigate(['/signin']);
+  }
  }
+
+
+
+

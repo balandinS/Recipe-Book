@@ -45,7 +45,7 @@ import { AuthService } from './auth/auth.service';
     FormsModule,
     HttpModule
   ],
-  providers: [ ShoppingService, RecipeService, AuthService ],
+  providers: [ ShoppingService, RecipeService, AuthService, AuthService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

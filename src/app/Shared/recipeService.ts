@@ -6,6 +6,7 @@ import { Subject } from 'rxjs/Subject';
 // tslint:disable-next-line:import-blacklist
 import 'rxjs/Rx';
 import { Http, Response } from '@angular/http';
+import { AuthService } from '../auth/auth.service';
 
 @Injectable()
 export class RecipeService implements OnInit {
@@ -33,17 +34,19 @@ export class RecipeService implements OnInit {
       ])
   ];
 
-  constructor(private shoppingService: ShoppingService, private http: Http) { }
+  constructor(private shoppingService: ShoppingService, private authService: AuthService , private http: Http) { }
 
   ngOnInit() {
   }
 
   saveData() {
-    return this.http.put('https://ng-recipe-book-1d243.firebaseio.com/data.json', this.recipes);
+    const token = this.authService.getToken();
+    return this.http.put('https://ng-recipe-book-1d243.firebaseio.com/data.json?auth=' + token, this.recipes);
   }
 
   getData() {
-    return this.http.get('https://ng-recipe-book-1d243.firebaseio.com/data.json')
+    const token = this.authService.getToken();
+    return this.http.get('https://ng-recipe-book-1d243.firebaseio.com/data.json?auth=' + token)
       .map(
         (respone: Response) => {
           const data: Recipe[] = respone.json();

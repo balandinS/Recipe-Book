@@ -14,22 +14,15 @@
                 </li>
             </ul>
 
-            <ul class="nav navbar-nav navbar-right">
-                <ul class="nav navbar-nav">
+
+
+            <ul class="nav navbar-nav navbar-right" appDropDown *ngIf="srvAuth.isAuthpassed()">
                     <li class="nav-item" routerLinkActive="active">
-                        <a class="nav-link" routerLink="/signup">Register</a>
+                            <a type="button" style="cursor: pointer;" (click)="onLogOut()">Log Out</a>
                     </li>
-                    <li class="nav-item" routerLinkActive="active">
-                        <a class="nav-link" routerLink="/signin">Log In</a>
-                     </li>
-
-                </ul>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right" appDropDown>
                 <li class="dropdown" appDropDown>
                     <a style="cursor: pointer;" class="dropdown-toggle nav-link" role="button" id="dropdown09">Manage</a>
-                    <ul class="dropdown-menu" aria-labelledby="dropdown09">
+                    <ul class="dropdown-menu" aria-labelledby="dropdown09"  >
                         <li>
                             <a type="button" style="cursor: pointer;" (click)="onSaveData()">Save Data</a>
                         </li>
@@ -37,7 +30,20 @@
                             <a style="cursor: pointer;" (click)="onGetData()">Fetch data</a>
                         </li>
                     </ul>
+
                 </li>
+              
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right" *ngIf="!srvAuth.isAuthpassed()">
+                <ul class="nav navbar-nav">
+                    <li class="nav-item" routerLinkActive="active">
+                        <a class="nav-link" routerLink="/signup">Register</a>
+                    </li>
+                    <li class="nav-item" routerLinkActive="active">
+                        <a class="nav-link" routerLink="/signin">Log In</a>
+                    </li>
+                </ul>
             </ul>
 
         </div>
