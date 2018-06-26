@@ -8,8 +8,10 @@ import { RecipeItemComponent } from './recipe-list/recipe-item/recipe-item.compo
 import { RecipesStartComponent } from './recipes-start/recipes-start.component';
 import { RecipesEditComponent } from './recipes-edit/recipes-edit.component';
 import { RecipesRouter } from './recipesRoutes.module';
-import { ShareService } from '../Shared/sharedropdown.service';
-import { AuthGuard } from '../auth/authGuard.service';
+import { ShareModule } from '../Shared/share.module';
+import { AuthModule } from '../auth/auth.module';
+import { AuthService } from '../auth/auth.service';
+
 
 @NgModule({
     declarations: [
@@ -24,8 +26,8 @@ import { AuthGuard } from '../auth/authGuard.service';
         CommonModule,
         ReactiveFormsModule,
         RecipesRouter,
-        ShareService,
-    ]
+        ShareModule,
+    ],
 }
 )
 export class RecipesModule { }

@@ -10,6 +10,6 @@ import { DropDownDirective } from './dropDown.directive';
         DropDownDirective
     ]
 })
-export class ShareService {
+export class ShareModule {
 
 }

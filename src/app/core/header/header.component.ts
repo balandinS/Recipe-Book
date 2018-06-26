@@ -1,8 +1,8 @@
 
 import { Component} from '@angular/core';
-import { RecipeService } from '../Shared/recipeService';
+import { RecipeService } from '../../Shared/recipeService';
 import { Http } from '@angular/http';
-import { AuthService } from '../auth/auth.service';
+import { AuthService } from '../../auth/auth.service';
 import { Router } from '@angular/router';
 
 @Component({
