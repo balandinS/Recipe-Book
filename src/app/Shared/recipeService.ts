@@ -5,8 +5,10 @@ import { ShoppingService } from './shoppingList.service';
 import { Subject } from 'rxjs/Subject';
 // tslint:disable-next-line:import-blacklist
 import 'rxjs/Rx';
-import { Http, Response } from '@angular/http';
+import { HttpClient, HttpParams, HttpRequest } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
+import { auth } from 'firebase';
+
 
 @Injectable()
 export class RecipeService implements OnInit {
@@ -34,29 +36,35 @@ export class RecipeService implements OnInit {
       ])
   ];
 
-  constructor(private shoppingService: ShoppingService, private authService: AuthService , private http: Http) { }
+  constructor(private shoppingService: ShoppingService, private authService: AuthService , private httpClient: HttpClient) { }
 
   ngOnInit() {
   }
 
   saveData() {
     const token = this.authService.getToken();
-    return this.http.put('https://ng-recipe-book-1d243.firebaseio.com/data.json?auth=' + token, this.recipes);
+    const url = 'https://ng-recipe-book-1d243.firebaseio.com/data.json';
+   const req = new HttpRequest('PUT', url, this.recipes, { reportProgress: true, params: new HttpParams().set('auth', token) } );
+   return this.httpClient.request(req);
   }
 
   getData() {
     const token = this.authService.getToken();
-    return this.http.get('https://ng-recipe-book-1d243.firebaseio.com/data.json?auth=' + token)
+    return this.httpClient.get<Recipe[]>('https://ng-recipe-book-1d243.firebaseio.com/data.json', {
+      observe: 'body',
+      responseType: 'json',
+      params: new HttpParams().set('auth', token)
+    })
       .map(
-        (respone: Response) => {
-          const data: Recipe[] = respone.json();
+        (recipes) => {
           // tslint:disable-next-line:prefer-const
-          for (let recipe of data) {
+          for (let recipe of recipes) {
             if (!recipe['ingredien']) {
               recipe['ingredien'] = [];
             }
           }
-          return data;
+          console.log(recipes);
+          return recipes;
         })
       .subscribe(
         (recipes: Recipe[]) => this.setRecipes(recipes)
