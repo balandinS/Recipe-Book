@@ -44,13 +44,14 @@ export class RecipeService implements OnInit {
   saveData() {
     const token = this.authService.getToken();
     const url = 'https://ng-recipe-book-1d243.firebaseio.com/data.json';
-   const req = new HttpRequest('PUT', url, this.recipes, { reportProgress: true, params: new HttpParams().set('auth', token) } );
+   const req = new HttpRequest('PUT', url, this.recipes, {reportProgress: true, params: new HttpParams().set('auth', token)});
    return this.httpClient.request(req);
   }
 
   getData() {
     const token = this.authService.getToken();
-    return this.httpClient.get<Recipe[]>('https://ng-recipe-book-1d243.firebaseio.com/data.json', {
+    const url = 'https://ng-recipe-book-1d243.firebaseio.com/data.json';
+    return this.httpClient.get<Recipe[]>(url, {
       observe: 'body',
       responseType: 'json',
       params: new HttpParams().set('auth', token)
