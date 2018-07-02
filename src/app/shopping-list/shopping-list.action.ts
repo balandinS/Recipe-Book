@@ -6,7 +6,8 @@ export const ADD_IGREDIEN = 'ADD_IGREDIEN';
 
 export class AddIngrdient implements Action {
    readonly type = 'ADD_IGREDIEN';
-   payload: Ingredien;
+
+   constructor(public payload: Ingredien) {}
 }
 
 export type ShoppingListAction =  AddIngrdient;
