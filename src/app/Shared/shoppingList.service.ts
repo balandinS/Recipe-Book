@@ -6,26 +6,19 @@ export class ShoppingService {
   newIngredient = new Subject<Ingredien[]>();
   startingEditItem = new Subject<number>();
 
-  private  ingredients;
-   constructor() {}
+    private ingredients: Ingredien[] =
+        [
+        new Ingredien('apples', 6),
+        new Ingredien('Tomatos', 10),
+        ]
+    ;
+    constructor() { }
 
    getIngredient(index: number) {
        return this.ingredients[index];
    }
 
-   getIngredients() {
-       return this.ingredients.slice();
-   }
 
-   addNewIngredien(ingredient: Ingredien) {
-       this.ingredients.push(ingredient);
-       this.newIngredient.next(this.ingredients.slice());
-   }
-
-   addNewIngrediens(ingredients: Ingredien[]) {
-          this.ingredients.push(...ingredients);
-          this.newIngredient.next(this.ingredients.slice());
-   }
    updateIngredian(index: number, newIngredient: Ingredien) {
        this.ingredients[index] = newIngredient;
        this.newIngredient.next(this.ingredients);

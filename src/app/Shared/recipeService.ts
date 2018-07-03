@@ -1,20 +1,19 @@
 import { OnInit, Injectable } from '@angular/core';
 import { Recipe } from '../recipes/recipe.model';
 import { Ingredien } from './ingredient.model';
-import { ShoppingService } from './shoppingList.service';
 import { Subject } from 'rxjs/Subject';
+import { Store } from '@ngrx/store';
 // tslint:disable-next-line:import-blacklist
 import 'rxjs/Rx';
 import { HttpClient, HttpParams, HttpRequest } from '@angular/common/http';
 import { AuthService } from '../auth/auth.service';
 import { auth } from 'firebase';
-
+import * as ShoppingListAction from '../shopping-list/shopping-list.action';
 
 @Injectable()
 export class RecipeService implements OnInit {
 
   recipeChanges = new Subject<Recipe[]>();
-
   private recipes: Recipe[] = [
     new Recipe(
       'Hamburger',
@@ -36,7 +35,11 @@ export class RecipeService implements OnInit {
       ])
   ];
 
-  constructor(private shoppingService: ShoppingService, private authService: AuthService , private httpClient: HttpClient) { }
+  constructor(
+    private authService: AuthService,
+    private httpClient: HttpClient,
+    private store: Store<{shoppingList: {ingredients: Ingredien[]}}>
+  ) { }
 
   ngOnInit() {
   }
@@ -97,7 +100,7 @@ export class RecipeService implements OnInit {
   }
 
   addIngridientToShoppList(ingredients: Ingredien[]) {
-    this.shoppingService.addNewIngrediens(ingredients);
+    this.store.dispatch(new ShoppingListAction.AddIngrdients(ingredients));
   }
 
   deleteRecipe(index: number) {
