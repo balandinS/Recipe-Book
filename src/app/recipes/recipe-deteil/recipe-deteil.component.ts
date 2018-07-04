@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Recipe } from '../recipe.model';
 import { RecipeService } from '../../Shared/recipeService';
 import { ActivatedRoute, Params, Router } from '@angular/router';
+import * as fromShoppingList from '../../shopping-list/shopping-list.reducers';
+import { Store } from '@ngrx/store';
 
 @Component({
   selector: 'app-recipe-deteil',
@@ -16,7 +18,8 @@ export class RecipeDeteilComponent implements OnInit {
  constructor(
   private recipeService: RecipeService,
   private router: Router,
-  private route: ActivatedRoute
+  private route: ActivatedRoute,
+  private store: Store<fromShoppingList.AppState>
 ) { }
 
   ngOnInit() {
