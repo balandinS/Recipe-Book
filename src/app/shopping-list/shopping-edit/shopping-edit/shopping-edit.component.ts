@@ -1,8 +1,7 @@
 import { Store } from '@ngrx/store';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
 import { Ingredien } from '../../../Shared/ingredient.model';
-import { ShoppingService } from '../../../Shared/shoppingList.service';
-import {NgForm} from '@angular/forms';
+import { NgForm } from '@angular/forms';
 import { Subscription } from 'rxjs/Subscription';
 import * as ShoppingListActions from '../../shopping-list.action';
 import * as fromShoppingList from '../../shopping-list.reducers';
@@ -14,30 +13,33 @@ import * as fromShoppingList from '../../shopping-list.reducers';
 })
 export class ShoppingEditComponent implements OnInit, OnDestroy {
 
-  isStartedEdit = false;
   @ViewChild('f') slForm: NgForm;
-  intgrdient: Ingredien;
-  editedItemIndex: number;
+  isStartedEdit = false;
+  editedItem: Ingredien;
   subscription = new Subscription();
-  constructor(private shoppingService: ShoppingService,  private store: Store<fromShoppingList.AppState>) { }
+  constructor(private store: Store<fromShoppingList.AppState>) { }
 
   ngOnInit() {
-    this.subscription = this.shoppingService.startingEditItem.subscribe(
-       (index: number) => {
-         this.isStartedEdit =  true;
-         this.editedItemIndex = index;
-         this.intgrdient = this.shoppingService.getIngredient(index);
-         this.slForm.setValue({
-           name: this.intgrdient.name,
-           amount: this.intgrdient.amount
-         });
-     });
+
+    this.subscription = this.store.select('shoppingList').subscribe(
+      data => {
+        if (data.editedIngredientIndex > -1) {
+           this.editedItem = data.editedIngredient;
+          this.isStartedEdit = true;
+          this.slForm.setValue({
+            name: this.editedItem.name,
+            amount: this.editedItem.amount
+          });
+        } else {
+          this.isStartedEdit = false;
+        }
+      });
   }
   onPush(form: NgForm) {
     const value = form.value;
     const ingredien = new Ingredien(value.name, value.amount);
     if (this.isStartedEdit) {
-     this.store.dispatch(new ShoppingListActions.UpdateIngrdient({index: this.editedItemIndex, ingredient: ingredien}));
+      this.store.dispatch(new ShoppingListActions.UpdateIngrdient({ingredient: ingredien}));
       this.slForm.reset();
     } else {
       this.store.dispatch(new ShoppingListActions.AddIngrdient(ingredien));
@@ -47,13 +49,13 @@ export class ShoppingEditComponent implements OnInit, OnDestroy {
   }
 
   onClear() {
-   this.slForm.reset();
-   this.isStartedEdit = false;
+    this.slForm.reset();
+    this.isStartedEdit = false;
 
   }
 
   onDelete() {
-    this.store.dispatch(new ShoppingListActions.DeleteIngrdient({index: this.editedItemIndex}));
+    this.store.dispatch(new ShoppingListActions.DeleteIngrdient());
     this.onClear();
   }
 

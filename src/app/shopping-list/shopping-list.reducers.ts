@@ -1,14 +1,16 @@
 import * as ShoppingListAction from './shopping-list.action';
 import { Ingredien } from '../Shared/ingredient.model';
-import { State } from '@ngrx/store';
 
 export interface AppState {
+    shoppingList: State;
+}
 
- ingredients1: Ingredien[];
+export interface State {
+ ingredients: Ingredien[];
  editedIngredient: Ingredien;
  editedIngredientIndex: number;
 }
-const initialState = {
+const initialState: State = {
     ingredients: [
         new Ingredien('apples', 6),
         new Ingredien('Tomatos', 10),
@@ -27,23 +29,33 @@ export function shoppingListReducers(state = initialState, action: ShoppingListA
             ingredients: [...state.ingredients, ...action.payload]
         };
         case ShoppingListAction.UPPDATE_IGREDIEN:
-            const ingredient = state[action.payload.index];
+            const ingredient = state[state.editedIngredientIndex];
             const updateIngredient = {
                 ...ingredient,
-                ...action.payload.ingredient
+                ...action.payload.ingredient,
+                editedIngredient: null,
+               editedIngredientIndex: -1
             };
             const ingredients = [...state.ingredients];
-            ingredients[action.payload.index] = updateIngredient;
+            ingredients[state.editedIngredientIndex] = updateIngredient;
             return {
                 ...state,
                 ingredients: ingredients
             };
         case ShoppingListAction.DELETE_IGREDIEN:
         const oldIngredients = [...state.ingredients];
-        oldIngredients.splice(action.payload.index, 1);
+        oldIngredients.splice(state.editedIngredientIndex, 1);
         return {
             ...state,
             ingredients: oldIngredients
+        };
+        case ShoppingListAction.START_EDIT:
+        const editedIngredient = {...state.ingredients[action.payload.index]};
+        return {
+             ...state,
+             editedIngredient: editedIngredient,
+             editedIngredientIndex: action.payload.index
+
         };
         default: return state;
     }
