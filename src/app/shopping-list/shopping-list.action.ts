@@ -7,6 +7,7 @@ export const ADD_IGREDIENTS = 'ADD_IGREDIENTS';
 export const UPPDATE_IGREDIEN = 'UPPDATE_IGREDIEN';
 export const DELETE_IGREDIEN = 'DELETE_IGREDIEN';
 export const START_EDIT = 'START_EDIT';
+export const STOPED_EDIT = 'STOPED_EDIT';
 
 
 
@@ -34,6 +35,9 @@ export class UpdateIngrdient implements Action {
     readonly type = 'START_EDIT';
      constructor(public payload: {index: number}) {}
  }
+ export class StopedEdit implements Action {
+    readonly type = 'STOPED_EDIT';
+ }
 
 
 
@@ -42,4 +46,5 @@ AddIngrdient    |
 AddIngrdients   |
 UpdateIngrdient |
 DeleteIngrdient |
-StartEdit;
+StartEdit       |
+StopedEdit;
